@@ -12,6 +12,7 @@ shell scripts keep their executable bit: the Windows filesystem has no such
 permission, so the usual tools would silently produce `-rw-rw-rw-` and
 `sudo ./install.sh` would fail for whoever unpacks it.
 """
+import gzip
 import hashlib
 import os
 import shutil
@@ -86,19 +87,25 @@ def build_tree(name):
 
 def write_targz(name, dest_root):
     path = os.path.join(OUT, name + ".tar.gz")
-    with tarfile.open(path, "w:gz") as t:
-        for base, dirs, files in os.walk(dest_root):
-            dirs.sort()
-            for f in sorted(files):
-                full = os.path.join(base, f)
-                rel = os.path.relpath(full, dest_root)
-                info = t.gettarinfo(full, arcname=name + "/" + rel.replace(os.sep, "/"))
-                # force the mode: Windows reports 0666 for everything
-                info.mode = mode_for(rel)
-                info.uid = info.gid = 0
-                info.uname = info.gname = "root"
-                with open(full, "rb") as fh:
-                    t.addfile(info, fh)
+    # mtime=0 in the gzip header and a fixed member timestamp: rebuilding the
+    # same tree must reproduce the same bytes, or SHA256SUMS churns for nothing.
+    with open(path, "wb") as raw:
+        with gzip.GzipFile(filename="", mode="wb", fileobj=raw, mtime=0) as gz:
+            with tarfile.open(fileobj=gz, mode="w") as t:
+                for base, dirs, files in os.walk(dest_root):
+                    dirs.sort()
+                    for f in sorted(files):
+                        full = os.path.join(base, f)
+                        rel = os.path.relpath(full, dest_root)
+                        info = t.gettarinfo(
+                            full, arcname=name + "/" + rel.replace(os.sep, "/"))
+                        # force the mode: Windows reports 0666 for everything
+                        info.mode = mode_for(rel)
+                        info.uid = info.gid = 0
+                        info.uname = info.gname = "root"
+                        info.mtime = 0
+                        with open(full, "rb") as fh:
+                            t.addfile(info, fh)
     return path
 
 
