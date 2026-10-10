@@ -22,7 +22,7 @@ ROOT = os.path.dirname(HERE)
 
 # Where the GamepadUI CEF debug port is reachable from this machine.
 # Either forward it (ssh -N -L 8081:127.0.0.1:8081 frame) or point this straight
-# at the device: SF_CDP=192.168.1.129:8081
+# at the device: SF_CDP=<device-ip>:8081
 HOST = os.environ.get("SF_CDP", "127.0.0.1:8081")
 
 QAM_OPEN_JS = r"""
