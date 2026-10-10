@@ -1,4 +1,4 @@
-# Steam Frame 快速设置菜单「风扇」页
+ # Steam Frame 快速设置菜单内 添加 设备的 手动风扇调节
 
 在 Steam Frame（SteamOS + SteamVR GamepadUI）的**快速设置菜单（QAM）**底部标签栏里，
 紧挨着「?」帮助气泡右边新增一个风扇图标；点开后是风扇转速控制与实时温度面板。
