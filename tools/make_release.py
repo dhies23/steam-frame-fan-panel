@@ -32,6 +32,7 @@ FILES = [
     ("diagnose.sh", "diagnose.sh"),
     ("VERSION", "VERSION"),
     ("README.md", "README.md"),
+    ("images/frame-ssh-setup.png", "images/frame-ssh-setup.png"),
     ("device/sf_fan_qam.js", "device/sf_fan_qam.js"),
     ("device/sf_fan_qamd.py", "device/sf_fan_qamd.py"),
     ("device/sf-fan-qamd.service", "device/sf-fan-qamd.service"),
@@ -46,7 +47,7 @@ EXTRA = [
      "docs/device-tools/rpm_latency.py"),
     (os.path.join(ROOT, "tools", "device", "tach_window.py"),
      "docs/device-tools/tach_window.py"),
-    (os.path.join(ROOT, "shots", "qam_fan.png"), "preview.png"),
+    (os.path.join(SRC, "preview.png"), "preview.png"),
 ]
 
 EXECUTABLE = {".sh"}
