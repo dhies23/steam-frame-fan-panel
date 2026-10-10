@@ -93,7 +93,11 @@ def api(path, data=None, method=None, raw=None, ctype="application/json", tok=No
             txt = r.read().decode("utf-8", "replace")
             return r.status, (json.loads(txt) if txt.strip().startswith(("{", "[")) else txt)
     except urllib.error.HTTPError as e:
-        return e.code, e.read().decode("utf-8", "replace")
+        txt = e.read().decode("utf-8", "replace")
+        try:
+            return e.code, json.loads(txt)
+        except ValueError:
+            return e.code, txt
 
 
 api.tok = None
