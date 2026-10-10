@@ -1,0 +1,3 @@
+# Windows 上检出时不要改行尾：脚本会被拷到 Linux 上执行，
+# CRLF 会让 bash 报 `$'\r': command not found`。
+* -text

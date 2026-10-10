@@ -1,0 +1,18 @@
+[Unit]
+Description=Steam Frame QAM fan & temperature panel
+Documentation=file:///home/steamos/sf-fan-qam/README.md
+After=multi-user.target graphical.target
+Wants=deckard-fan-control.service
+
+[Service]
+Type=simple
+Environment=PYTHONUNBUFFERED=1
+ExecStart=/usr/bin/python3 /home/steamos/sf-fan-qam/sf_fan_qamd.py --js /home/steamos/sf-fan-qam/sf_fan_qam.js
+Restart=always
+RestartSec=3
+# If we die while a manual fan speed is set, hand the fan back to the
+# stock controller so the device can never be left without thermal control.
+ExecStopPost=/usr/bin/systemctl start deckard-fan-control.service
+
+[Install]
+WantedBy=multi-user.target

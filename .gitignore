@@ -1,0 +1,23 @@
+# 开发与运行时产生的文件
+release/
+shots/*.json
+shots/preview.html
+shots/css/
+shots/vrshot_*.png
+shots/steam_latest.jpg
+
+# 临时脚本（sf.ps1 跑完即删）
+_*.sh
+
+# Python
+__pycache__/
+*.pyc
+
+# 编辑器 / 系统
+.vscode/
+.idea/
+*.swp
+*~
+Thumbs.db
+Desktop.ini
+.DS_Store
