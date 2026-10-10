@@ -3,6 +3,10 @@
 在 Steam Frame（SteamOS + SteamVR GamepadUI）的**快速设置菜单（QAM）**底部标签栏里，
 紧挨着「?」帮助气泡右边新增一个风扇图标；点开后是风扇转速控制与实时温度面板。
 
+> **直接下载**：到 [Releases](https://github.com/dhies23/steam-frame-fan-panel/releases/latest)
+> 取 `sf-fan-qam-1.0.0.tar.gz`，解压后 `sudo ./install.sh`。详细步骤见
+> [`sf-fan-qam/README.md`](sf-fan-qam/README.md)。
+
 ```
     🔔   ⚙   ⚡   🔋   ❓   ✿
                           ↑ 新增的风扇标签
@@ -133,6 +137,7 @@ python tools/sf_compare_style.py       # 与原生菜单逐项对比（9 项）
 python tools/sf_refresh.py             # 抓最新 DOM
 python tools/build_preview.py          # 生成离线预览 HTML，不用头显也能看
 python tools/make_release.py           # 打出 release/ 下的发行包
+python tools/publish_release.py        # 把发行包作为 GitHub Release 附件上传
 ```
 
 Windows 上跑设备端脚本用 `sf.ps1`（会处理 CRLF 问题）：

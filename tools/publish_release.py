@@ -6,6 +6,7 @@
 """
 import json
 import os
+import subprocess
 import sys
 import urllib.error
 import urllib.parse
@@ -58,10 +59,28 @@ GPL-3.0。
 """.replace("@V@", VERSION)
 
 
-def api(path, data=None, method=None, raw=None, ctype="application/json"):
-    tok = os.environ.get("GH_PAT")
-    if not tok:
-        raise SystemExit("set GH_PAT")
+def token():
+    """A token that can write contents.
+
+    $GH_PAT is asked first, but a fine-grained PAT often has Issues read/write
+    while missing Contents write — which pushes just fine (git authenticated
+    separately) and yet cannot create a release. So fall back to whatever
+    credential git itself uses for github.com.
+    """
+    env = os.environ.get("GH_PAT")
+    if env:
+        return env
+    p = subprocess.run(["git", "credential", "fill"],
+                       input="protocol=https\nhost=github.com\n\n",
+                       capture_output=True, text=True)
+    for line in p.stdout.splitlines():
+        if line.startswith("password="):
+            return line.split("=", 1)[1].strip()
+    raise SystemExit("no token: set GH_PAT or configure a git credential helper")
+
+
+def api(path, data=None, method=None, raw=None, ctype="application/json", tok=None):
+    tok = tok or api.tok
     url = path if path.startswith("http") else "https://api.github.com" + path
     body = raw if raw is not None else (json.dumps(data).encode() if data is not None else None)
     req = urllib.request.Request(url, data=body, method=method)
@@ -77,7 +96,11 @@ def api(path, data=None, method=None, raw=None, ctype="application/json"):
         return e.code, e.read().decode("utf-8", "replace")
 
 
+api.tok = None
+
+
 def main():
+    api.tok = token()
     files = ["sf-fan-qam-%s.tar.gz" % VERSION, "sf-fan-qam-%s.zip" % VERSION, "SHA256SUMS"]
     for f in files:
         if not os.path.isfile(os.path.join(REL, f)):
