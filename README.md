@@ -14,6 +14,7 @@
 
 ![面板](shots/qam_fan.png)
 
+
 面板包含：
 
 | 行 | 内容 |
@@ -31,10 +32,9 @@
 ---
 
 ## 安装
+发行页 zip包内含 安装脚本 与卸载脚本     安装与卸载脚本 运行均需要sudo权限   请提前在设备内设置好用户密码  使用ssh链接设备 安装或者卸载
+<img width="1296" height="1559" alt="06c274bc222026c42164f2b13d67adce" src="https://github.com/user-attachments/assets/382e432f-a4c6-4013-ac58-5d7fa8ea4f4d" />
 
-需要一台 Steam Frame 开发机、能开终端、有 sudo 密码。
-
-直接用仓库里的文件装也行（推荐给测试者用 `release/` 里的发行包，见下）：
 
 ```bash
 git clone https://github.com/dhies23/steam-frame-fan-panel.git
